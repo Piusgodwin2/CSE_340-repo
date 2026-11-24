@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+
+<main>
+  <h1><%= category.name %></h1>
+
+  <h2>Service Projects</h2>
+  <% if (projects.length > 0) { %>
+    <ul>
+      <% projects.forEach(project => { %>
+        <li>
+          <strong><%= new Date(project.date).toLocaleDateString() %>: </strong>
+          <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+          (<a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>)
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No service projects are in this category yet.</p>
+  <% } %>
+
+  <p><a href="/categories">← Back to categories</a></p>
+</main>
+
+<%- include('partials/footer') %>

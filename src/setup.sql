@@ -15,7 +15,6 @@ VALUES
 ('GreenHarvest Growers', 'An urban farming collective promoting food sustainability and education in local neighborhoods.', 'contact@greenharvest.org', 'greenharvest-logo.png'),
 ('UnityServe Volunteers', 'A volunteer coordination group supporting local charities and service initiatives.', 'hello@unityserve.org', 'unityserve-logo.png');
 
-
 -- ================
 -- Create service project table
 -- =================
@@ -55,6 +54,36 @@ VALUES
 (3, 'Free Medical Outreach', 'Offer basic health screenings and health education to the community.', 'Ewet Housing Estate', '2027-01-16'),
 (3, 'Computer Literacy Class', 'Teach teenagers basic computer skills such as typing and internet safety.', 'Youth Center, Uyo', '2027-02-20'),
 (3, 'Clothing Donation Drive', 'Collect and sort gently used clothes for families displaced by flooding.', 'Church Hall, Uyo', '2027-03-13');
+
+-- ======================
+-- category table
+-- ======================
+CREATE TABLE IF NOT EXISTS category (
+  category_id SERIAL PRIMARY KEY,
+  name        VARCHAR(100) NOT NULL UNIQUE
+);
+
+INSERT INTO category (name) VALUES
+  ('Environmental'),
+  ('Education'),
+  ('Health'),
+  ('Community Outreach')
+ON CONFLICT (name) DO NOTHING;
+
+-- =======================
+-- Project_Category table
+-- =======================
+CREATE TABLE IF NOT EXISTS project_category (
+  project_id INTEGER NOT NULL REFERENCES service_project(project_id) ON DELETE CASCADE,
+  category_id INTEGER NOT NULL REFERENCES category(category_id) ON DELETE CASCADE,
+  PRIMARY KEY (project_id, category_id)
+); 
+
+INSERT INTO project_category (project_id, category_id) VALUES
+  (1, 1),
+  (1, 2),
+  (2, 1),
+  (3, 3);
 
 SELECT organization_id, COUNT(*) AS total_projects
 FROM service_project
